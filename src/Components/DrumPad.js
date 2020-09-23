@@ -1,5 +1,5 @@
-import React from "react";
-import { Howl, Howler } from "howler";
+import React, { useEffect } from "react";
+// import { Howl, Howler } from "howler";
 
 import Cev_H2 from "../Audio/Cev_H2.mp3";
 import Dsc_Oh from "../Audio/Dsc_Oh.mp3";
@@ -26,32 +26,46 @@ const clips = [
 ];
 
 const soundPlay = (src) => {
-  const sound = new Howl({
-    src,
-  });
-  sound.play();
+  var audio = new Audio(src);
+  audio.play();
 };
 
-Howler.volume(1);
+const handleKeydown = (e) => {
+  clips.forEach((item) => {
+    if (item.label == e.key.toUpperCase()) {
+      var audio = new Audio(item.sound);
+      audio.play();
+    }
+  });
+};
 
-const renderButtonAndSound = clips.map((soundObj, id, label) => {
+const renderButtonAndSound = clips.map((soundObj, key) => {
   return (
-    <button
-      id={id}
+    <div
+      id={soundObj.id}
+      key={key}
       className="drum-pad"
       onClick={() => soundPlay(soundObj.sound)}
     >
+      <audio
+        id={soundObj.label}
+        className="clip"
+        src={soundObj.sound}
+        type="audio/mpeg"
+      >
+        Your browser does not support the audio tag.
+      </audio>
       {soundObj.label}
-    </button>
+    </div>
   );
 });
 
-console.log(renderButtonAndSound)
-
 const DrumPad = () => {
-  return (
-    <div className="drum-pad-container">{ renderButtonAndSound }</div>
-  )
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeydown);
+  });
+
+  return <div className="drum-pad-container">{renderButtonAndSound}</div>;
 };
 
 export default DrumPad;
