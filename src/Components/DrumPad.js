@@ -25,27 +25,52 @@ const clips = [
   { sound: Cev_H2, id: "Closed HH", label: "C" },
 ];
 
-const soundPlay = (src) => {
-  var audio = new Audio(src);
-  audio.play();
+const soundPlay = (id) => {
+  document.getElementById(id).play();
 };
 
 const handleKeydown = (e) => {
-  clips.forEach((item) => {
-    if (item.label == e.key.toUpperCase()) {
-      var audio = new Audio(item.sound);
-      audio.play();
-    }
-  });
+  console.log(e.keyCode);
+  switch (e.keyCode) {
+    case 81:
+      document.getElementById("Q").play();
+      break;
+    case 87:
+      document.getElementById("W").play();
+      break;
+    case 69:
+      document.getElementById("E").play();
+      break;
+
+    case 65:
+      document.getElementById("A").play();
+      break;
+    case 83:
+      document.getElementById("S").play();
+      break;
+    case 68:
+      document.getElementById("D").play();
+      break;
+
+    case 90:
+      document.getElementById("Z").play();
+      break;
+    case 88:
+      document.getElementById("X").play();
+      break;
+    case 67:
+      document.getElementById("C").play();
+      break;
+  }
 };
 
 const renderButtonAndSound = clips.map((soundObj, key) => {
   return (
     <div
       id={soundObj.id}
-      key={key}
+      key={soundObj.label}
       className="drum-pad"
-      onClick={() => soundPlay(soundObj.sound)}
+      onClick={() => soundPlay(soundObj.label)}
     >
       <audio
         id={soundObj.label}
