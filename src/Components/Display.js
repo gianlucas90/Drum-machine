@@ -1,9 +1,12 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 const Display = () => {
+  const selection = useSelector((state) => state.selector);
+
   return (
     <div id="display">
-      <p>this is the display</p>
+      <p>{selection}</p>
     </div>
   );
 };

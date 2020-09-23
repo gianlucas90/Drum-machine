@@ -1,4 +1,6 @@
 import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { changeSelection } from "../Actions";
 // import { Howl, Howler } from "howler";
 
 import Cev_H2 from "../Audio/Cev_H2.mp3";
@@ -64,28 +66,36 @@ const handleKeydown = (e) => {
   }
 };
 
-const renderButtonAndSound = clips.map((soundObj, key) => {
-  return (
-    <div
-      id={soundObj.id}
-      key={soundObj.label}
-      className="drum-pad"
-      onClick={() => soundPlay(soundObj.label)}
-    >
-      <audio
-        id={soundObj.label}
-        className="clip"
-        src={soundObj.sound}
-        type="audio/mpeg"
-      >
-        Your browser does not support the audio tag.
-      </audio>
-      {soundObj.label}
-    </div>
-  );
-});
-
 const DrumPad = () => {
+  const dispatch = useDispatch();
+
+  function handleClick(event) {
+    soundPlay(event.target.value);
+    dispatch(changeSelection(event.target.id));
+  }
+
+  const renderButtonAndSound = clips.map((soundObj, key) => {
+    return (
+      <button
+        id={soundObj.id}
+        key={soundObj.label}
+        className="drum-pad"
+        value={soundObj.label}
+        onClick={handleClick}
+      >
+        <audio
+          id={soundObj.label}
+          className="clip"
+          src={soundObj.sound}
+          type="audio/mpeg"
+        >
+          Your browser does not support the audio tag.
+        </audio>
+        {soundObj.label}
+      </button>
+    );
+  });
+
   useEffect(() => {
     document.addEventListener("keydown", handleKeydown);
   });
